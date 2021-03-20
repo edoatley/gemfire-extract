@@ -1,0 +1,2 @@
+start locator --name=locator1 --mcast-port=0
+start server --name=server1 --locators=localhost[10334]

@@ -1,6 +1,5 @@
 package com.edoatley.gemfireextract.rest;
 
-import com.edoatley.gemfireextract.data.RepositoryRepository;
 import com.edoatley.gemfireextract.model.Repository;
 import com.edoatley.gemfireextract.service.RepositoryService;
 import lombok.RequiredArgsConstructor;

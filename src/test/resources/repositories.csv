@@ -1,0 +1,11 @@
+id,url,app,rating,tags,criticals,severe,moderate
+D1BE202F-68A3-47CF-A594-DD31DED69308,git@github.com:edoatley/diablo3.git,Diablo 3,18,arcade|fun|xbox,1,2,3
+987DDC5E-97A6-453E-9B83-088465467C7F,git@github.com:edoatley/doom.git,Doom,18,arcade|fun|xbox,1,2,3
+54C50B45-C7CD-4836-87B5-16EAD4724A88,git@github.com:edoatley/fifa.git,Fifa,18,arcade|fun|xbox,1,2,3
+FFAE3A43-E9A1-4FD0-9192-7504BE18F82F,git@github.com:edoatley/beeswarm.git,Bee Swarm,18,arcade|fun|xbox,1,2,3
+34541011-AFE6-4235-B0E7-2FA21FE14CB7,git@github.com:edoatley/farcry.git,Farcry,18,arcade|fun|xbox,1,2,3
+5B01B948-7AEE-41A7-A10F-2AC6B26679A8,git@github.com:edoatley/warcraft.git,Warcraft,18,arcade|fun|xbox,1,2,3
+25FE69C3-06C2-491D-AFC5-14D496372796,git@github.com:edoatley/proevo.git,Pro Evolution Soccer,18,arcade|fun|xbox,1,2,3
+A59F2205-34C6-4F15-8EEA-9789C40EC75B,git@github.com:edoatley/sonic.git,Sonic,18,arcade|fun|xbox,1,2,3
+3DFDE602-C546-467C-8189-440C52E1FE88,git@github.com:edoatley/mario.git,Mario,18,arcade|fun|xbox,1,2,3
+FA227E88-DC92-4009-A737-EFB870892DE8,git@github.com:edoatley/sor.git,Streets of Rage,18,arcade|fun|xbox,1,2,3

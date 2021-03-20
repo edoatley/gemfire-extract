@@ -1,0 +1,19 @@
+version: "3"
+services:
+  geode:
+    image: "apachegeode/geode"
+    expose:
+      - "1099"
+      - "10334"
+      - "40404"
+      - "7575"
+      - "7070"
+    ports:
+      - "1099:1099"
+      - "10334:10334"
+      - "40404:40404"
+      - "7575:7575"
+      - "7070:7070"
+    volumes:
+      - ./scripts/:/scripts/
+    command: /scripts/gfshWrapper.sh gfsh run --file=/scripts/startGeode.gfsh

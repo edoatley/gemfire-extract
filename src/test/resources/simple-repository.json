@@ -1,0 +1,14 @@
+{
+  "id": "38A49E32-1ABB-444C-9AE2-F54D6E2BFE5A",
+  "url": "$URL",
+  "app": "Diablo 3",
+  "rating": "18",
+  "tags": [
+    "VIOLENCE", "GORE", "ACTION RPG"
+  ],
+  "repositorySecurityScore": {
+    "criticals": "9",
+    "severe": "3",
+    "moderate": "4"
+  }
+}
