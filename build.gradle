@@ -25,6 +25,7 @@ ext {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.geode:spring-geode-starter'
+	implementation("org.apache.geode:geode-serialization:1.13.1")
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

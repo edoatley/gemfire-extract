@@ -1,11 +1,18 @@
 package com.edoatley.gemfireextract;
 
+import com.edoatley.gemfireextract.data.RepositoryRepository;
 import com.edoatley.gemfireextract.model.Repository;
 import com.edoatley.gemfireextract.model.RepositorySecurityScore;
 import com.edoatley.gemfireextract.model.Tag;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpEntity;
@@ -21,19 +28,32 @@ import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GemfireExtractApplicationTests {
+	private final static ObjectMapper objectMapper = new ObjectMapper();
 
 	@Autowired
 	TestRestTemplate restTemplate;
 
-	@Test
-	void contextLoads() {
+	@Autowired
+	RepositoryRepository repository;
+
+	@BeforeEach
+	void setup() {
+		repository.deleteAll();
 	}
+
+	@Test
+	void contextLoads() { }
 
 	@Test
 	void saveARepoThenRetrieve() {
@@ -57,8 +77,20 @@ class GemfireExtractApplicationTests {
 
 	@Test
 	void loadSomeDataThenFindTheSecurityDetails() throws IOException {
-		Files.lines(Path.of(new ClassPathResource("src/test/resources/generated-data.txt").getPath()))
-				.map(s -> restTemplate.exchange("/repositories", HttpMethod.POST, new HttpEntity<>(s), Repository.class, emptyMap()));
+		final List<String> lines = Files.lines(Path.of(new ClassPathResource("src/test/resources/generated-data.txt").getPath()))
+				.collect(Collectors.toList());
+		lines.forEach(s -> {
+			System.err.println(s);
+			try {
+				final HttpEntity<Repository> requestEntity = new HttpEntity<>(objectMapper.readValue(s, Repository.class));
+				final ResponseEntity<Repository> res = restTemplate.exchange("/repositories", HttpMethod.POST, requestEntity, Repository.class, emptyMap());
+				assertThat(res.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		});
+
+		assertThat(repository.count()).isEqualTo(10);
 
 		final ResponseEntity<String> response = restTemplate.getForEntity("/security", String.class);
 
