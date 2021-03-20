@@ -9,7 +9,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 public class GemfireExtractApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(GemfireExtractApplication.class, args);
 		ConfigurableApplicationContext context = SpringApplication.run(GemfireExtractApplication.class, args);
 		StructImplToRepositorySecurityScoreConverter bean = context.getBean(StructImplToRepositorySecurityScoreConverter.class);
 		System.out.println(bean);
