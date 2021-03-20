@@ -6,7 +6,8 @@ zip file
 # Steps
 
 - [x] Create a basic rest API using gemfire
-- [ ] Create an integration test using dockerised geode
+- [ ] Create a simple integration test using dockerised geode
+- [ ] Try selecting just a few fields  
 - [ ] Create the zip unload
 - [ ] Create the zip upload
 - [ ] Change the backend to mongo and upload data from a gemfire unload

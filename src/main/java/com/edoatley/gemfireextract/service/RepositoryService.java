@@ -2,9 +2,11 @@ package com.edoatley.gemfireextract.service;
 
 import com.edoatley.gemfireextract.data.RepositoryRepository;
 import com.edoatley.gemfireextract.model.Repository;
+import com.edoatley.gemfireextract.model.RepositorySecurityScore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,5 +24,9 @@ public class RepositoryService {
 
     public Optional<Repository> findRepositoryById(String id) {
         return repositoryRepository.findById(id);
+    }
+
+    public List<RepositorySecurityScore> getSecurityScores() {
+        return repositoryRepository.getSecurityScores();
     }
 }

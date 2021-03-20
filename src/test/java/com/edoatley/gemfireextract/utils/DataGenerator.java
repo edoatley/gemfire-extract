@@ -2,6 +2,7 @@ package com.edoatley.gemfireextract.utils;
 
 import com.edoatley.gemfireextract.model.Repository;
 import com.edoatley.gemfireextract.model.RepositorySecurityScore;
+import com.edoatley.gemfireextract.model.Tag;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,6 +16,7 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class DataGenerator {
 
@@ -39,7 +41,7 @@ public class DataGenerator {
                 .url(url)
                 .app(app)
                 .rating(rating)
-                .tags(Arrays.asList(tags.split("\\|").clone()))
+                .tags(Arrays.stream(tags.split("\\|").clone()).map(Tag::new).collect(Collectors.toList()))
                 .repositorySecurityScore(RepositorySecurityScore.builder()
                         .criticals(criticals)
                         .severe(severe)

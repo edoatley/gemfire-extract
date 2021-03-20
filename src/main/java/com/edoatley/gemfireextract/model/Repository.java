@@ -16,6 +16,6 @@ public class Repository {
     String url;
     String app;
     String rating;
-    List<String> tags;
+    List<Tag> tags;
     RepositorySecurityScore repositorySecurityScore;
 }

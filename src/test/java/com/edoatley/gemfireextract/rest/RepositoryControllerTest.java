@@ -2,6 +2,7 @@ package com.edoatley.gemfireextract.rest;
 
 import com.edoatley.gemfireextract.model.Repository;
 import com.edoatley.gemfireextract.model.RepositorySecurityScore;
+import com.edoatley.gemfireextract.model.Tag;
 import com.edoatley.gemfireextract.service.RepositoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -76,7 +78,7 @@ class RepositoryControllerTest {
                 .url("https://github.com/MyFirstApp")
                 .app("MyFirstApp")
                 .rating("Awesome")
-                .tags(List.of("java", "docker", "gemfire"))
+                .tags(List.of("java", "docker", "gemfire").stream().map(Tag::new).collect(Collectors.toList()))
                 .repositorySecurityScore(RepositorySecurityScore.builder()
                         .criticals("0")
                         .severe("0")

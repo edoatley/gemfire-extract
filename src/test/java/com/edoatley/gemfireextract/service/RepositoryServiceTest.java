@@ -3,6 +3,7 @@ package com.edoatley.gemfireextract.service;
 import com.edoatley.gemfireextract.data.RepositoryRepository;
 import com.edoatley.gemfireextract.model.Repository;
 import com.edoatley.gemfireextract.model.RepositorySecurityScore;
+import com.edoatley.gemfireextract.model.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -33,7 +35,7 @@ class RepositoryServiceTest {
             .id("D26AE342-BCEC-46F9-B648-28F2C28E139D")
             .url("https://repositories-are-us.com")
             .app("Diablo IV")
-            .tags(List.of("game", "devil", "ARPG"))
+            .tags(List.of("game", "devil", "ARPG").stream().map(Tag::new).collect(Collectors.toList()))
             .rating("Epic")
             .repositorySecurityScore(RepositorySecurityScore.builder().criticals("0").severe("3").moderate("5").build())
             .build();
@@ -41,7 +43,7 @@ class RepositoryServiceTest {
     Repository dummyRepoWithoutId = Repository.builder()
             .url("https://repositories-are-us.com")
             .app("Diablo IV")
-            .tags(List.of("game", "devil", "ARPG"))
+            .tags(List.of("game", "devil", "ARPG").stream().map(Tag::new).collect(Collectors.toList()))
             .rating("Epic")
             .repositorySecurityScore(RepositorySecurityScore.builder().criticals("0").severe("3").moderate("5").build())
             .build();

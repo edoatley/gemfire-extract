@@ -1,12 +1,15 @@
 package com.edoatley.gemfireextract.rest;
 
 import com.edoatley.gemfireextract.model.Repository;
+import com.edoatley.gemfireextract.model.RepositorySecurityScore;
 import com.edoatley.gemfireextract.service.RepositoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +26,10 @@ public class RepositoryController {
     @GetMapping("/repositories/{id}")
     public ResponseEntity<Repository> findById(@PathVariable("id") String id) {
         return ResponseEntity.of(repositoryService.findRepositoryById(id));
+    }
+
+    @GetMapping("/security")
+    public ResponseEntity<List<RepositorySecurityScore>> getSecurityScores() {
+        return ResponseEntity.ok(repositoryService.getSecurityScores());
     }
 }
