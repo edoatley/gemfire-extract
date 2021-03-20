@@ -2,9 +2,11 @@ package com.edoatley.gemfireextract.model;
 
 import org.apache.geode.cache.query.internal.StructImpl;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.convert.ReadingConverter;
 import org.springframework.stereotype.Component;
 
 @Component
+@ReadingConverter
 public class StructImplToRepositorySecurityScoreConverter implements Converter<StructImpl, RepositorySecurityScore> {
 
     @Override

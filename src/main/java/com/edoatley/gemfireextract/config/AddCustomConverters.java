@@ -16,7 +16,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -31,6 +33,7 @@ public class AddCustomConverters {
     @Bean
     public ConversionServiceFactoryBean conversionService(Set<Converter<?, ?>> converters) {
         ConversionServiceFactoryBean factory = new ConversionServiceFactoryBean();
+        System.err.println(converters.stream().map(Objects::toString).collect(Collectors.joining(" ")));
         factory.setConverters(converters);
         return factory;
     }
