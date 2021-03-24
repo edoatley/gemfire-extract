@@ -6,40 +6,40 @@ import com.edoatley.gemfireextract.model.RepositorySecurityScore;
 import com.edoatley.gemfireextract.model.Tag;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.lingala.zip4j.ZipFile;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.web.util.UriBuilder;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Collections.emptyMap;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GemfireExtractApplicationTests {
-	private final static ObjectMapper objectMapper = new ObjectMapper();
+	private static final ObjectMapper objectMapper = new ObjectMapper();
+
+	@Value("classpath:generated-data.txt")
+	Resource generatedFile;
+	public static final String GENERATED_DATA_ZIP = "generated-data.zip";
 
 	@Autowired
 	TestRestTemplate restTemplate;
@@ -53,7 +53,7 @@ class GemfireExtractApplicationTests {
 	}
 
 	@Test
-	void contextLoads() { }
+	void contextLoads() {}
 
 	@Test
 	void saveARepoThenRetrieve() {
@@ -77,7 +77,7 @@ class GemfireExtractApplicationTests {
 
 	@Test
 	void loadSomeDataThenFindTheSecurityDetails() throws IOException {
-		final List<String> lines = Files.lines(Path.of(new ClassPathResource("src/test/resources/generated-data.txt").getPath()))
+		final List<String> lines = Files.lines(Path.of(generatedFile.getFile().getPath()))
 				.collect(Collectors.toList());
 		lines.forEach(s -> {
 			System.err.println(s);
@@ -97,4 +97,29 @@ class GemfireExtractApplicationTests {
 		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 		System.err.println(response.getBody());
 	}
+
+	@Test
+	void loadSomeDataFromZipAndReadIt() throws IOException {
+		File sourceText = generatedFile.getFile();
+		File sourceZip = new File(GENERATED_DATA_ZIP);
+		ZipFile zipFile = new ZipFile(sourceZip);
+		zipFile.addFile(sourceText);
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+		headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+		MultiValueMap<String, Object> requestMap = new LinkedMultiValueMap<>();
+		requestMap.add("user-file", new FileSystemResource(sourceZip));
+
+		final ResponseEntity<String> saveResponse = restTemplate.exchange("/upload", HttpMethod.POST, new HttpEntity<>(requestMap, headers), String.class);
+		assertThat(saveResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+		final URI uri = UriComponentsBuilder.fromPath("/repositories/{id}").build("25FE69C3-06C2-491D-AFC5-14D496372796");
+		final ResponseEntity<Repository> response = restTemplate.getForEntity(uri, Repository.class);
+
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(response.getBody().getId()).isEqualTo("25FE69C3-06C2-491D-AFC5-14D496372796");
+	}
+
 }
